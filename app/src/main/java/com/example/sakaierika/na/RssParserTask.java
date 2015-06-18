@@ -102,7 +102,7 @@ public class RssParserTask extends AsyncTask<String, Integer, RssListAdapter> {
                                         int sURL, eURL;
                                         sURL = text.indexOf("<");
                                         endURL = text.indexOf("alt=");
-                                        String str = text.substring(sURL, endURL + 4);
+                                        String str = text.substring(sURL, endURL + 5);
                                         text =text.replaceAll(str, "");
                                     }
 

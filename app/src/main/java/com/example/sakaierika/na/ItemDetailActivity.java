@@ -2,22 +2,17 @@ package com.example.sakaierika.na;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,20 +25,22 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
     private TextView mDescr;
     private TextView mLink;
     private TextView mRe1,mRe2,mRe3;
-    private ImageView mImage;
+    private NetworkImageView imageView;
+
+
 
     private CharSequence[] mReTitle = new String[3];
     private CharSequence[] mReLink = new String[3];
 
-    private CharSequence[] mseReTitle = new String[3];
-    private CharSequence[] mseReLink = new String[3];
 
-    private ArrayList mItems;
-
+    private  String imgURL;
     protected String link;
     protected String descr;
     protected String title;
     protected String rTitle;
+
+    private ImageLoader mImageLoader;
+    private RequestQueue mRequestQueue;
 
     Linkify.TransformFilter filter;
 
@@ -81,13 +78,9 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
         };
         Linkify.addLinks(mLink, pattern, link, null, filter);
 
-        String imgURL = intent.getStringExtra("IMG");
-        mImage = (ImageView) findViewById(R.id.item_img);
 
-
-
-//        ImageGetTask task = new ImageGetTask(mImage);
-//        task.execute(imgURL);
+        imgURL = intent.getStringExtra("IMG");
+        //Log.d("imgURL", imgURL);
 
 
         mRe1 = (TextView) findViewById(R.id.item_re1);
@@ -100,34 +93,6 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
         keyphraseclienttask.execute();
 
     }
-    class ImageGetTask extends AsyncTask<String,Void,Bitmap> {
-        private ImageView image;
-
-        public ImageGetTask(ImageView _image) {
-            image = _image;
-        }
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap image;
-            try {
-                URL imageUrl = new URL(params[0]);
-                InputStream imageIs;
-                imageIs = imageUrl.openStream();
-                image = BitmapFactory.decodeStream(imageIs);
-                return image;
-            } catch (MalformedURLException e) {
-                return null;
-            } catch (IOException e) {
-                return null;
-            }
-        }
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // 取得した画像をImageViewに設定します。
-            image.setImageBitmap(result);
-        }
-    }
-
 
 
     class KeyphraseClientTask extends AsyncTask<Void, Void, KeyphraseData> {
@@ -140,11 +105,11 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
             mReTitle = result.getmRelativeTitle();
             mReLink = result.getmRelativeLink();
             if (mReTitle != null && mReLink != null) {
-//                for (int i = 0;i <2 ;i++){
-//                    if(mReLink[i].equals(link)){
-//                        mReLink[i] = mReLink[3];
-//                    }
-//                }
+                for (int i = 0;i <2 ;i++){
+                    if(mReLink[i].equals(link)){
+                        mReLink[i] = mReLink[3];
+                    }
+                }
                 rTitle = mReTitle[0] + "\t→\tよむ";
                 mRe1.setText(rTitle);
                 Pattern pattern = Pattern.compile("よむ");
