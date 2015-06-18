@@ -21,6 +21,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
     private ArrayList mItems;
     private RssListAdapter mAdapter;
     private  ListView _listview;
+    private TextView category;
 
     protected int m_iArray = 10;
     TextView[] m_textView = new TextView[m_iArray];
@@ -33,6 +34,10 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
         mAdapter = new RssListAdapter(this, mItems);
 
        _listview = (ListView)findViewById(R.id.listView1);
+
+        category = (TextView)findViewById(R.id.cat);
+        category.setText(R.string.top);
+
 
         int[] resId = { R.id.top,  R.id.dom,
                         R.id.inte, R.id.eco,
@@ -59,42 +64,52 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
         switch (v.getId()) {
             case R.id.top:
                RSS_FEED_URL = "http://news.livedoor.com/topics/rss/top.xml";
+               category.setText(R.string.top);
                Log.d(RSS_FEED_URL,"top");
                 break;
             case R.id.dom:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/dom.xml";
+                category.setText(R.string.dom);
                 Log.d(RSS_FEED_URL,"dom");
                 break;
             case R.id.inte:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/int.xml";
+                category.setText(R.string.inte);
                 Log.d(RSS_FEED_URL,"inte");
                 break;
             case R.id.eco:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/eco.xml";
+                category.setText(R.string.eco);
                 Log.d(RSS_FEED_URL,"eco");
                 break;
             case R.id.ent:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/ent.xml";
+                category.setText(R.string.ent);
                 Log.d(RSS_FEED_URL,"ent");
                 break;
             case R.id.spo:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/spo.xml";
+                category.setText(R.string.spo);
                 Log.d(RSS_FEED_URL,"spo");
                 break;
             case R.id.cin:
                 RSS_FEED_URL = "http://news.livedoor.com/rss/summary/52.xml";
+                category.setText(R.string.cin);
                 Log.d(RSS_FEED_URL,"cin");
                 break;
             case R.id.gor:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/gourmet.xml";
+                category.setText(R.string.gor);
                 Log.d(RSS_FEED_URL,"gor");
                 break;
             case R.id.love:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/love.xml";
+                category.setText(R.string.love);
                 Log.d(RSS_FEED_URL,"love");
                 break;
             case R.id.trend:
                 RSS_FEED_URL = "http://news.livedoor.com/topics/rss/trend.xml";
+                category.setText(R.string.trend);
                 Log.d(RSS_FEED_URL,"trend");
                 break;
 //            default:

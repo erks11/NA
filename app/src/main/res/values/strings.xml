@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NA</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">にゅーすあぷり</string>
+    <string name="relativearticle">かんれんきじ\n</string>
+    <string name="top">おもなこと\n</string>
+    <string name="dom">こくないのこと\n</string>
+    <string name="inte">かいがいのこと\n</string>
+    <string name="eco">あいてぃーとかけいざい\n</string>
+    <string name="ent">げいのうのこと\n</string>
+    <string name="spo">すぽーつ\n</string>
+    <string name="cin">えいが\n</string>
+    <string name="gor">おいしいもの\n</string>
+    <string name="love">おんなのこ\n</string>
+    <string name="trend">とれんど\n</string>
+    <string name="action_settings">せってい</string>
 
 </resources>

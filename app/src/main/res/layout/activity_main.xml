@@ -12,6 +12,16 @@
             android:orientation="vertical"
             android:descendantFocusability="blocksDescendants">
 
+            <TextView
+                android:text="TextView"
+                android:id="@+id/cat"
+                android:textColor="#ffff66bd"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:background="#fffff8c5"
+                android:layout_gravity="center_horizontal" />
+
             <ListView
                 android:layout_height="wrap_content"
                 android:id="@+id/listView1"
@@ -32,7 +42,7 @@
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="主要"
+            android:text="@string/top"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -41,7 +51,7 @@
             android:id="@+id/dom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="国内"
+            android:text="@string/dom"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -50,7 +60,7 @@
             android:id="@+id/inte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="海外"
+            android:text="@string/inte"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -59,7 +69,7 @@
             android:id="@+id/eco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="IT 経済"
+            android:text="@string/eco"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -68,7 +78,7 @@
             android:id="@+id/ent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="芸能"
+            android:text="@string/ent"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -77,7 +87,7 @@
             android:id="@+id/spo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="スポーツ"
+            android:text="@string/spo"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -86,7 +96,7 @@
             android:id="@+id/cin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="映画"
+            android:text="@string/cin"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -95,7 +105,7 @@
             android:id="@+id/gor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="グルメ"
+            android:text="@string/gor"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -104,7 +114,7 @@
             android:id="@+id/love"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="女の子"
+            android:text="@string/love"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />
@@ -113,7 +123,7 @@
             android:id="@+id/trend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="トレンド"
+            android:text="@string/trend"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_weight="1" />

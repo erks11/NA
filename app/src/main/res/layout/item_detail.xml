@@ -10,13 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffff8b8b"
-        android:textSize="28dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/item_date"
+        android:textSize="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -25,26 +27,39 @@
 
     <TextView
         android:id="@+id/item_description"
+        android:textSize="14dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp" />
+        android:layout_height="wrap_content" />
+
+
 
     <TextView
         android:id="@+id/item_link"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp" />
+        android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/item_relation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp" />
+        android:text="@string/relativearticle" />
 
 
+    <TextView
+        android:id="@+id/item_re1"
+        android:textSize="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/item_re2"
+        android:textSize="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/item_re3"
+        android:textSize="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

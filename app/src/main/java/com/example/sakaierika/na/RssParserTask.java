@@ -96,19 +96,26 @@ public class RssParserTask extends AsyncTask<String, Integer, RssListAdapter> {
                                         startURL = text.indexOf("http");
                                         endURL = text.indexOf(".jpg");
                                         String imgURL = text.substring(startURL, endURL + 4);
-                                        String imgTag;
-                                        startURL = text.indexOf("<img");
-                                        endURL = text.indexOf(">");
-                                        imgTag = text.substring(startURL, endURL + 1);
-                                        text = text.replace(imgTag, "");
+                                        Log.d("imgURL",imgURL);
+//                                        String imgTag;
+//                                        startURL = text.indexOf("<img");
+//                                        endURL = text.indexOf(">");
+//                                        imgTag = text.substring(startURL, endURL + 1);
+//                                        text = text.replace(imgTag, "");
+                                        item.setImgURL(imgURL);
                                     }
+
                                     if (text.contains("br") || text.contains("li") || text.contains("ul")) {
                                         text = text.replaceAll("<br />", "");
-                                        text = text.replaceAll("<li>", "・");
+                                        text = text.replaceAll("<li>", "❤︎");
                                         text = text.replaceAll("</li>", "");
                                         text = text.replaceAll("<ul>", "");
                                         text = text.replaceAll("</ul>", "");
+
+                                        text = text.replaceAll(" ","");
+                                        text = text.replaceAll("　","");
                                     }
+
                                     if (text.contains("article") && text.contains("href")) {
                                         int test, length;
                                         String href;

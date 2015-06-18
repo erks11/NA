@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,16 +23,20 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
     private TextView mpubDate;
     private TextView mDescr;
     private TextView mLink;
-    private TextView mRelation;
+    private TextView mRe1,mRe2,mRe3;
     private ImageView mImage;
 
-    private ArrayList mKeyphrase;
+    private CharSequence[] mReTitle = new String[3];
+    private CharSequence[] mReLink = new String[3];
 
     private ArrayList mItems;
 
     protected String link;
     protected String descr;
     protected String title;
+    protected String rTitle;
+
+    Linkify.TransformFilter filter;
 
     private static final String TAG = "TestApp";
     private static final String MY_APP_ID = "dj0zaiZpPUhJYU5DRnRoQ2gyOSZzPWNvbnN1bWVyc2VjcmV0Jng9ZWQ-";
@@ -62,7 +65,7 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
         mLink = (TextView) findViewById(R.id.item_link);
         mLink.setText("記事を読む");
         Pattern pattern = Pattern.compile("記事を読む");
-        Linkify.TransformFilter filter = new Linkify.TransformFilter() {
+        filter = new Linkify.TransformFilter() {
             @Override
             public String transformUrl(Matcher match, String url) {
                 return link;
@@ -85,10 +88,40 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
             return keyphraseClient.getLatestKeyphrase();
         }
         protected void onPostExecute(KeyphraseData result) {
-            // LogCat の出力結果
-            mRelation = (TextView)findViewById(R.id.item_relation);
-            mRelation.setText(result.getKeyphrase());
-            Log.d(TAG, "Keyphrase = " + result.getKeyphrase());
+            mRe1 = (TextView)findViewById(R.id.item_re1);
+            mRe2 = (TextView)findViewById(R.id.item_re2);
+            mRe3 = (TextView)findViewById(R.id.item_re3);
+           result.getmRelativeLink();
+            mReTitle  = result.getmRelativeTitle();
+            mReLink = result.getmRelativeLink();
+            rTitle = mReTitle[0]+"       よむ";
+            mRe1.setText(rTitle);
+            Pattern pattern = Pattern.compile("よむ");
+            filter = new Linkify.TransformFilter() {
+                @Override
+                public String transformUrl(Matcher match, String url) {
+                    return mReLink[0].toString();
+                }
+            };
+            Linkify.addLinks(mRe1, pattern, mReLink[0].toString(), null, filter);
+            rTitle = mReTitle[1]+"       よむ";
+            mRe2.setText(rTitle);
+            filter = new Linkify.TransformFilter() {
+                @Override
+                public String transformUrl(Matcher match, String url) {
+                    return mReLink[1].toString();
+                }
+            };
+            Linkify.addLinks(mRe2, pattern, mReLink[1].toString(), null, filter);
+            rTitle = mReTitle[2]+"       よむ";
+            mRe3.setText(rTitle);
+            filter = new Linkify.TransformFilter() {
+                @Override
+                public String transformUrl(Matcher match, String url) {
+                    return mReLink[2].toString();
+                }
+            };
+            Linkify.addLinks(mRe3, pattern, mReLink[2].toString(), null, filter);
         }
     }
     @Override
