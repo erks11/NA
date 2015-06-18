@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:layout_gravity="center_horizontal">
+
+<LinearLayout
+    android:id="@+id/item_detail"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,14 +17,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ffff8b8b"
-        android:textSize="20dp" />
+        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/item_date"
-        android:textSize="8dp"
+        android:textSize="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical|right" />
+
 
 
     <ImageView
@@ -27,21 +35,21 @@
 
     <TextView
         android:id="@+id/item_description"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-
 
     <TextView
         android:id="@+id/item_link"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/relativearticle" />
+
 
 
     <TextView
@@ -63,3 +71,4 @@
         android:layout_height="wrap_content" />
 
 </LinearLayout>
+</ScrollView>
