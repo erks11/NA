@@ -9,11 +9,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * Created by sakaierika on 2015/06/18.
@@ -21,16 +24,17 @@ import java.io.IOException;
 public class KeyphraseClient {
     private String mAppID;
     private String str;
-    private Item item;
-    String parsedText = "";
+    private static String BASEURL = "http://news.livedoor.com/lite/search/article/?word=";
+    private static String type = "type&article";
+    private static String USERAGENT;
 
-    private static final String TAG = "TestApp";
-
+    private static final String TAG = "NA";
 
     public KeyphraseClient(String appID,String descr) {
         mAppID = appID;
         str = descr;
     }
+
 
     public KeyphraseData getLatestKeyphrase() {
         KeyphraseData result = new KeyphraseData();
@@ -42,16 +46,13 @@ public class KeyphraseClient {
         str = str.replaceAll(" ","");
         str = str.replaceAll("　","");
 
-        str.trim();
         Log.d("str",str);
-
 
         Uri.Builder uriBuilder = new Uri.Builder();
         uriBuilder.path("http://jlp.yahooapis.jp/KeyphraseService/V1/extract");
         uriBuilder.appendQueryParameter("appid", mAppID);
         uriBuilder.appendQueryParameter("sentence", str);
         uriBuilder.appendQueryParameter("output", "json");
-        //uriBuilder.appendQueryParameter("callback","ResultSet");
         String uri = Uri.decode(uriBuilder.build().toString());
         Log.d("MyApp", "uri=" + uri);
         // Request HTTP GET
@@ -65,40 +66,46 @@ public class KeyphraseClient {
             Log.d(TAG, "jsonEntity=" + jsonEntity);
             String strjson = jsonEntity.toString();
 
-            //builderはStringBuilderクラスなのでtoString()で文字列に変換
-            JSONArray jsonArray = new JSONArray(jsonEntity.toString());
-            //JSON Arrayのサイズを表示
-            System.out.println("Number of entries " + jsonArray.length());
-            //JSON Objectを作成する
-            for (int i = 0; i < jsonArray.length(); i++) {
-                //getJSONObjectでJSON Arrayに格納された要素をJSON Objectとして取得できる
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                //JSON Objectをパースする
-                //表示する際はgetString("ほげほげ")で"ほげほげ"をキーとする値を取得できる
-                //userのように入れ子になっているときは、getJSONObject()を使って階層を下っていく
-                System.out.println(i);
-                System.out.println("キーフレーズ：" + jsonObject.getString("key"));
-                System.out.println("スコア：" + jsonObject.getString("value"));
-                System.out.println();//改行
-//            Log.d("JSONSampleActivity", jsonEntity.toString());
-//            Log.d(TAG,strjson);
-//            int startURL,endURL;
-//
-//            endURL = strjson.indexOf("100");
-//            startURL = strjson.lastIndexOf(",",endURL);
-//            result.setKeyphrase(strjson.substring(startURL+2,endURL-2));
-//
-//            Log.d(TAG,strjson.substring(startURL+2,endURL-2));
+            Log.d(TAG, "strjson=" + strjson);
+            strjson = strjson.substring(1,strjson.length()-1);
+            String set[] =strjson.split("[,:]");
 
-//            if (jsonEntity != null) {
-//                JSONObject jsonKeyphrase =
-//                        jsonEntity.optJSONObject("KeyphraseResult");
-//                Log.d("MyApp", "jsonKeyphrase=" + jsonKeyphrase);
-//                if (jsonKeyphrase != null) {
-//                    result.setKeyphrase(jsonKeyphrase.optString("Keyphrase"));
-//                }
-//            }
+
+            Log.d(TAG, "set[0]" + set[0]);
+            Log.d(TAG, "set[1]" + set[1]);
+            Log.d(TAG, "set[2]" + set[2]);
+            Log.d(TAG, "set[3]" + set[3]);
+            result.setKeyphrase(set[0]);
+            result.setmScore(set[1]);
+
+            USERAGENT = System.getProperty("http.agent");
+
+            Elements links = Jsoup.connect(BASEURL + URLEncoder.encode(set[0])+type).userAgent(USERAGENT).get().select("ul.articlelist>li>a");
+            //Connection connection = Jsoup.connect(BASEURL + URLEncoder.encode("オーストラリア"));
+            //Connection user = connection.userAgent(USERAGENT).timeout(20000);
+            //Document doc = user.get();
+            Boolean Blink = links.isEmpty();
+            Log.d("isEmpty",Blink.toString());
+            int linksize = links.size();
+            Log.isLoggable("linksize=",linksize);
+            Log.d("url",BASEURL + URLEncoder.encode(set[0]));
+
+//            Log.d("Connection=",connection.toString());
+//            Log.d("Useragent=",user.toString());
+           // Log.d("doc=",doc.toString());
+            //Log.d("URL=", BASEURL + URLEncoder.encode("オーストラリア"));
+            Log.d("links=",links.toString());
+
+            for(Element link : links){
+                Log.d("msg","はいったよおおおおおおお");
+                String title = link.text();
+                String url = link.absUrl("href");
+               // url = URLDecoder.decode(url.substring(url.indexOf("=") + 1, url.indexOf('&')), "UTF-8");
+                Log.d("title=",title);
+                Log.d("url=",url);
             }
+
+
         }catch (ClientProtocolException e) {
             Log.e(TAG, "App ERROR!");
         } catch (IOException e) {
@@ -106,8 +113,9 @@ public class KeyphraseClient {
         } catch (JSONException e) {
             Log.e(TAG, "App ERROR!!!");
         }catch (Exception e) {
-                Log.e(TAG, "App ERROR!!!!");
+             Log.e(TAG, "App ERROR!!!!");
             }
+
         return result;
     }
 }

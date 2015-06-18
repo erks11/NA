@@ -34,14 +34,31 @@ public class RssListAdapter extends ArrayAdapter<Item> {
         }
 
         Item item = this.getItem(position);
-        if(item != null){
+        if(item != null) {
             String title = item.getTitle().toString();
-            mTitle = (TextView)view.findViewById(R.id.title);
+            mTitle = (TextView) view.findViewById(R.id.title);
             mTitle.setText(title);
             String mpubdate = item.getDate().toString();
-            mpubDate = (TextView)view.findViewById(R.id.date);
+            mpubDate = (TextView) view.findViewById(R.id.date);
             mpubDate.setText(mpubdate);
-
+            String img = item.getImgURL().toString();
+//            if (img != null) {
+//                mImg = (ImageView) view.findViewById(R.id.img);
+//                URL url = null;
+//
+//                try {
+//                    url = new URL(img);
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
+//                Bitmap bmp;
+//                try {
+//                    bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                    mImg.setImageBitmap(bmp);
+//                } catch (IOException e) {
+//                    Log.e("msg", "App ERROR!!");
+//                }
+//            }
         }
         return view;
     }
