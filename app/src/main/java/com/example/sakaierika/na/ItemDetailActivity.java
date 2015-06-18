@@ -1,13 +1,9 @@
 package com.example.sakaierika.na;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
@@ -19,7 +15,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -88,24 +84,11 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
         String imgURL = intent.getStringExtra("IMG");
         mImage = (ImageView) findViewById(R.id.item_img);
 
-        try {
-            URL image_url = new URL(imgURL);
-
-            InputStream is = (InputStream) image_url.getContent();
-
-            Drawable drawable = Drawable.createFromStream(is,"");
-
-            is.close();
-
-            mImage.setImageDrawable(drawable);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
-//        BitmapWorkerTask test = new BitmapWorkerTask(mImage);
-//        test.execute();
+//        ImageGetTask task = new ImageGetTask(mImage);
+//        task.execute(imgURL);
+
 
         mRe1 = (TextView) findViewById(R.id.item_re1);
         mRe2 = (TextView) findViewById(R.id.item_re2);
@@ -117,134 +100,35 @@ public class ItemDetailActivity extends Activity implements OnItemClickListener,
         keyphraseclienttask.execute();
 
     }
+    class ImageGetTask extends AsyncTask<String,Void,Bitmap> {
+        private ImageView image;
 
-    public void loadBitmap(Context context, String filePath, ImageView imageView, Bitmap loadingBitmap) {
-        // 同じタスクが走っていないか、同じ ImageView で古いタスクが走っていないかチェック
-        if (cancelPotentialWork(filePath, imageView)) {
-            final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-            final AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), loadingBitmap, task);
-            imageView.setImageDrawable(asyncDrawable);
-            task.execute(filePath);
+        public ImageGetTask(ImageView _image) {
+            image = _image;
         }
-    }
-
-    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
-        if (imageView != null) {
-            final Drawable drawable = imageView.getDrawable();
-            if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-                return asyncDrawable.getBitmapWorkerTask();
-            }
-        }
-        return null;
-    }
-
-    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-        private final WeakReference<ImageView> mImageViewReference;
-        int mWidth;
-        int mHeight;
-        String mFilePath;
-
-        public BitmapWorkerTask(ImageView imageView) {
-            mImageViewReference = new WeakReference<ImageView>(imageView);
-            mWidth = imageView.getWidth();
-            mHeight = imageView.getHeight();
-        }
-
-        // バックグラウンドで画像をデコード
         @Override
         protected Bitmap doInBackground(String... params) {
-            mFilePath = params[0];
-            return decodeSampledBitmapFromFile(mFilePath, mWidth, mHeight);
+            Bitmap image;
+            try {
+                URL imageUrl = new URL(params[0]);
+                InputStream imageIs;
+                imageIs = imageUrl.openStream();
+                image = BitmapFactory.decodeStream(imageIs);
+                return image;
+            } catch (MalformedURLException e) {
+                return null;
+            } catch (IOException e) {
+                return null;
+            }
         }
-
-        // ImageView に Bitmap をセット
         @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            // キャンセルされていたらなにもしない
-            if (isCancelled()) {
-                bitmap = null;
-            }
-
-            if (mImageViewReference != null && bitmap != null) {
-                final ImageView imageView = mImageViewReference.get();
-                if (imageView != null) {
-                    // ImageView からタスクを取り出す
-                    final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-                    if (this == bitmapWorkerTask && imageView != null) {
-                        // 同じタスクなら ImageView に Bitmap をセット
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }
-            }
+        protected void onPostExecute(Bitmap result) {
+            // 取得した画像をImageViewに設定します。
+            image.setImageBitmap(result);
         }
     }
 
-    public static Bitmap decodeSampledBitmapFromFile(String path,
-                                                     int reqWidth, int reqHeight) { // BEST QUALITY MATCH
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-
-        // Calculate inSampleSize
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        int inSampleSize = 1;
-
-        if (height > reqHeight) {
-            inSampleSize = Math.round((float)height / (float)reqHeight);
-        }
-
-        int expectedWidth = width / inSampleSize;
-
-        if (expectedWidth > reqWidth) {
-            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
-            inSampleSize = Math.round((float)width / (float)reqWidth);
-        }
-
-
-        options.inSampleSize = inSampleSize;
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(path, options);
-    }
-
-    public static boolean cancelPotentialWork(String filePath, ImageView imageView) {
-        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-        if (bitmapWorkerTask != null) {
-            final String bitmapData = bitmapWorkerTask.mFilePath;
-            if (!bitmapData.equals(filePath)) {
-                // 以前のタスクをキャンセル
-                bitmapWorkerTask.cancel(true);
-            } else {
-                // 同じタスクがすでに走っているので、このタスクは実行しない
-                return false;
-            }
-        }
-        // この ImageView に関連する新しいタスクを実行する
-        return true;
-    }
-
-
-    static class AsyncDrawable extends BitmapDrawable {
-        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
-
-        public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
-            super(res, bitmap);
-            bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
-        }
-
-        public BitmapWorkerTask getBitmapWorkerTask() {
-            return bitmapWorkerTaskReference.get();
-        }
-    }
 
     class KeyphraseClientTask extends AsyncTask<Void, Void, KeyphraseData> {
         protected KeyphraseData doInBackground(Void... params) {

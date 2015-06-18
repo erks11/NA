@@ -98,6 +98,12 @@ public class RssParserTask extends AsyncTask<String, Integer, RssListAdapter> {
                                         String imgURL = text.substring(startURL, endURL + 4);
                                         Log.d("imgURL",imgURL);
                                         item.setImgURL(imgURL);
+
+                                        int sURL, eURL;
+                                        sURL = text.indexOf("<");
+                                        endURL = text.indexOf("alt=");
+                                        String str = text.substring(sURL, endURL + 4);
+                                        text =text.replaceAll(str, "");
                                     }
 
                                     if (text.contains("br") || text.contains("li") || text.contains("ul")) {
