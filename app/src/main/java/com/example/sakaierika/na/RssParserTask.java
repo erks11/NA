@@ -47,6 +47,7 @@ public class RssParserTask extends AsyncTask<String, Integer, RssListAdapter> {
         RssListAdapter result = null;
         try {
             URL url = new URL(params[0]);
+
             InputStream is = url.openConnection().getInputStream();
             result = parseXml(is);
             Log.d("RSS", "result = " + result);

@@ -2,6 +2,7 @@ package com.example.sakaierika.na;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,8 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
     private RssListAdapter mAdapter;
     private  ListView _listview;
     private TextView category;
+    DrawerLayout drawerLayout;
+    ListView drawerListView;
 
     protected int m_iArray = 10;
     TextView[] m_textView = new TextView[m_iArray];
@@ -33,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
         mItems = new ArrayList();
         mAdapter = new RssListAdapter(this, mItems);
 
-       _listview = (ListView)findViewById(R.id.listView1);
+       _listview = (ListView)findViewById(R.id.list);
 
         category = (TextView)findViewById(R.id.cat);
         category.setText(R.string.top);
@@ -52,11 +55,16 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
             findViewById(resId[i]).setOnClickListener(this);
         }
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerListView = (ListView) findViewById(R.id.
+                list);
+
      // タスクを起動する
         RssParserTask task = new RssParserTask(this, mAdapter,_listview);
         task.execute(RSS_FEED_URL);
         _listview.setOnItemClickListener(this);
     }
+
 
 
 
@@ -120,7 +128,7 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
         }
         mItems = new ArrayList();
         mAdapter = new RssListAdapter(this, mItems);
-        _listview = (ListView)findViewById(R.id.listView1);
+        _listview = (ListView)findViewById(R.id.list);
         RssParserTask task = new RssParserTask(this, mAdapter,_listview);
         task.execute(RSS_FEED_URL);
         _listview.setOnItemClickListener(this);

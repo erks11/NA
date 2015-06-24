@@ -15,4 +15,7 @@
     <string name="trend">とれんど\n</string>
     <string name="action_settings">せってい</string>
 
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+
 </resources>

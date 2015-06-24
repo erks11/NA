@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,12 +18,19 @@ public class RssListAdapter extends ArrayAdapter<Item> {
     private LayoutInflater mInflater;
     private TextView mTitle;
     private TextView mpubDate;
+    private ImageView mimg;
+
+    private String imgUrl;
+
+    private Context mContext;
 
     public RssListAdapter(Context context, List<Item> objects) {
         super(context, 0, objects);
         // TODO Auto-generated constructor stub
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
+
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -39,6 +47,11 @@ public class RssListAdapter extends ArrayAdapter<Item> {
             String mpubdate = item.getDate().toString();
             mpubDate = (TextView) view.findViewById(R.id.date);
             mpubDate.setText(mpubdate);
+            imgUrl = item.getImgURL().toString();
+
+
+
+
 
         }
         return view;
